@@ -25,6 +25,7 @@
   .standort-label-teal { background: linear-gradient(135deg, #0d7377, #14a085); }
   .standort-label-purple { background: linear-gradient(135deg, #6b2fa0, #9b59b6); }
   .standort-label-gray { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06); }
+  .standort-label-orange { background: linear-gradient(135deg, #ff9500, #ff7a00); }
   .standort-title { font-size: 16px; font-weight: 700; color: white; }
   .standort-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
   .standort-label-gray .standort-title { color: #1d1d1f; }
@@ -34,10 +35,54 @@
   #tab-grafenwoehr:checked ~ .standort-tabs label[for="tab-grafenwoehr"],
   #tab-regensburg:checked ~ .standort-tabs label[for="tab-regensburg"],
   #tab-hilfe:checked ~ .standort-tabs label[for="tab-hilfe"] { outline: 3px solid #1d1d1f; outline-offset: 2px; }
-  .panel { display: none; }
-  #tab-grafenwoehr:checked ~ .panels #panel-grafenwoehr,
-  #tab-regensburg:checked ~ .panels #panel-regensburg,
-  #tab-hilfe:checked ~ .panels #panel-hilfe { display: block; }
+  .panel { display: block; }
+  /* ─── OVERLAY / MODAL ─── */
+  .panel-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 200;
+    padding: 28px 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-items: flex-start;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
+  #tab-grafenwoehr:checked ~ .panels #overlay-grafenwoehr,
+  #tab-regensburg:checked ~ .panels #overlay-regensburg,
+  #tab-hilfe:checked ~ .panels #overlay-hilfe { display: flex; }
+  .panel-overlay-teal   { background: rgba(13,115,119,0.55); }
+  .panel-overlay-purple { background: rgba(107,47,160,0.52); }
+  .panel-overlay-orange { background: rgba(255,149,0,0.42); }
+  .overlay-dismiss { position: absolute; inset: 0; cursor: pointer; z-index: 0; }
+  .panel-modal {
+    position: relative; z-index: 1;
+    background: #fff;
+    border-radius: 20px;
+    width: 100%; max-width: 520px;
+    margin: auto;
+    padding: 30px 22px 26px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.35);
+    border-top: 6px solid transparent;
+  }
+  .panel-overlay-teal   .panel-modal { border-top-color: #14a085; }
+  .panel-overlay-purple .panel-modal { border-top-color: #9b59b6; }
+  .panel-overlay-orange .panel-modal { border-top-color: #ff9500; }
+  .panel-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; line-height: 1; font-weight: 600;
+    color: #fff; cursor: pointer; border: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    transition: transform 0.1s;
+    z-index: 2;
+  }
+  .panel-close-teal   { background: #0d7377; }
+  .panel-close-purple { background: #6b2fa0; }
+  .panel-close-orange { background: #ff9500; }
+  .panel-close:active { transform: scale(0.92); }
   .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: #8e8e93; margin-bottom: 10px; display: block; }
   .chip { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: white; margin-bottom: 10px; }
   .chip-teal { background: #0d7377; }
@@ -60,7 +105,7 @@
   .qr-icon { font-size: 14px; }
   .qr-toggle-text { font-size: 12px; font-weight: 600; color: #3a3a3c; flex: 1; }
   .qr-arrow { font-size: 12px; color: #8e8e93; transition: transform 0.2s; }
-  .qr-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
+  .qr-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; }
   .qr-modal { background: white; border-radius: 20px; padding: 28px; text-align: center; max-width: 280px; width: 90%; }
   .qr-modal-title { font-size: 16px; font-weight: 700; color: #1d1d1f; margin-bottom: 4px; }
   .qr-modal-sub { font-size: 12px; color: #8e8e93; margin-bottom: 20px; }
@@ -78,18 +123,34 @@
   .btn-hilfe { display: inline-block; padding: 10px 18px; border-radius: 50px; font-size: 12px; font-weight: 700; color: white; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
   .btn-blue { background: #0071e3; }
   .btn-orange { background: #ff9500; }
+  /* ─── TERMIN-FORMULAR ─── */
+  .termin-toggle { display: none; }
+  .panel-overlay-top { z-index: 1100; }
+  #toggle-termin:checked ~ .panels #overlay-termin { display: flex; }
+  .termin-form { margin-top: 4px; }
+  .termin-field { display: block; margin-bottom: 14px; }
+  .termin-field > span { display: block; font-size: 12px; font-weight: 700; color: #1d1d1f; margin-bottom: 6px; }
+  .termin-field select, .termin-field input { width: 100%; font-family: inherit; font-size: 14px; color: #1d1d1f; background: #f5f5f7; border: 1px solid #e5e5ea; border-radius: 10px; padding: 11px 12px; -webkit-appearance: none; appearance: none; }
+  .termin-field input[type="date"] { -webkit-appearance: none; appearance: none; }
+  .termin-field select:focus, .termin-field input:focus { outline: none; border-color: #ff9500; background: #fff; }
+  .termin-submit { width: 100%; border: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700; color: #fff; background: #ff9500; border-radius: 50px; padding: 13px 18px; margin-top: 4px; }
+  .termin-submit:active { transform: scale(0.98); }
+  .termin-hint { font-size: 11px; color: #8e8e93; line-height: 1.6; margin-top: 12px; }
+  .termin-done { display: none; font-size: 13px; font-weight: 600; color: #0d7377; background: #e6f4f1; border-radius: 10px; padding: 10px 12px; margin-top: 12px; line-height: 1.5; }
+  .termin-done.show { display: block; }
   .footer { text-align: center; font-size: 11px; color: #c7c7cc; margin-top: 40px; padding-top: 16px; border-top: 1px solid #e5e5ea; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">St. Michaelswerk</div>
-  <h1>Schulkalender<br>einbetten.</h1>
+  <h1>Schulkalender<br>verwalten.</h1>
   <p class="lead">Wähle deinen Standort und abonniere deinen Kalender mit einem Klick.</p>
   <div class="hinweis">
     <strong class="hinweis-label">💡 Hinweis</strong>
     <p>Nach dem Klick öffnet sich ein Auswahlfenster – wähle dort <strong>Outlook</strong> aus. Falls nichts passiert: Datei zuerst herunterladen, im Browser öffnen und nochmal versuchen. Alternativ QR-Code mit dem Handy scannen.</p>
   </div>
+  <input type="radio" name="standort" id="tab-none" checked>
   <input type="radio" name="standort" id="tab-grafenwoehr">
   <input type="radio" name="standort" id="tab-regensburg">
   <input type="radio" name="standort" id="tab-hilfe">
@@ -102,15 +163,20 @@
       <div><div class="standort-title">Regensburg</div><div class="standort-sub">Schultermine &amp; Geburtstage</div></div>
       <div class="arrow">→</div>
     </label>
-    <label for="tab-hilfe" class="standort-label standort-label-gray">
+    <label for="tab-hilfe" class="standort-label standort-label-orange">
       <div><div class="standort-title">Hilfe &amp; Kontakt</div><div class="standort-sub">Fragen &amp; Probleme</div></div>
       <div class="arrow">→</div>
     </label>
   </div>
+  <input type="checkbox" id="toggle-termin" class="termin-toggle">
   <div class="panels">
 
     <!-- GRAFENWÖHR -->
-    <div class="panel" id="panel-grafenwoehr">
+    <div class="panel-overlay panel-overlay-teal" id="overlay-grafenwoehr">
+      <label for="tab-none" class="overlay-dismiss" aria-label="Fenster schließen"></label>
+      <div class="panel-modal">
+        <label for="tab-none" class="panel-close panel-close-teal" aria-label="Fenster schließen">×</label>
+        <div class="panel" id="panel-grafenwoehr">
       <span class="chip chip-teal">Standort</span>
       <div class="panel-title">Grafenwöhr</div>
       <p class="panel-lead">Klicke auf „Kalenderabo starten" – es öffnet sich ein Auswahlfenster, wähle dort Outlook.</p>
@@ -200,10 +266,16 @@
       </div>
 
       <div class="tip"><strong class="tip-label">Tipp</strong><p>Mehrere Kalender lassen sich in Outlook übereinanderlegen – einzeln ein- oder ausblendbar.</p></div>
+        </div>
+      </div>
     </div>
 
     <!-- REGENSBURG -->
-    <div class="panel" id="panel-regensburg">
+    <div class="panel-overlay panel-overlay-purple" id="overlay-regensburg">
+      <label for="tab-none" class="overlay-dismiss" aria-label="Fenster schließen"></label>
+      <div class="panel-modal">
+        <label for="tab-none" class="panel-close panel-close-purple" aria-label="Fenster schließen">×</label>
+        <div class="panel" id="panel-regensburg">
       <span class="chip chip-purple">Standort</span>
       <div class="panel-title">Regensburg</div>
       <p class="panel-lead">Klicke auf „Kalenderabo starten" – es öffnet sich ein Auswahlfenster, wähle dort Outlook.</p>
@@ -293,10 +365,16 @@
       </div>
 
       <div class="tip"><strong class="tip-label">Tipp</strong><p>Mehrere Kalender lassen sich in Outlook übereinanderlegen – einzeln ein- oder ausblendbar.</p></div>
+        </div>
+      </div>
     </div>
 
     <!-- HILFE -->
-    <div class="panel" id="panel-hilfe">
+    <div class="panel-overlay panel-overlay-orange" id="overlay-hilfe">
+      <label for="tab-none" class="overlay-dismiss" aria-label="Fenster schließen"></label>
+      <div class="panel-modal">
+        <label for="tab-none" class="panel-close panel-close-orange" aria-label="Fenster schließen">×</label>
+        <div class="panel" id="panel-hilfe">
       <span class="chip chip-orange">Hilfe</span>
       <div class="panel-title">Hilfe &amp;<br>Kontakt.</div>
       <p class="panel-lead">Etwas hat nicht geklappt? Ich helfe gerne.</p>
@@ -314,10 +392,115 @@
         </div>
         <a href="mailto:florian.hirmer@st-michaelswerk.de?subject=Bitte%20meinen%20Geburtstag%20entfernen&body=Hallo%20Florian%2C%0A%0Abitte%20entferne%20meinen%20Geburtstag%20aus%20dem%20Kollegen-Kalender.%0A%0AVielen%20Dank!" class="btn-hilfe btn-orange">Anfrage senden</a>
       </div>
+
+      <div class="hilfe-card" style="border-color: #ff9500;">
+        <div class="hilfe-card-info">
+          <div class="hilfe-card-title">Termin einreichen</div>
+          <p>Schlage einen neuen Termin für den Schulkalender vor – er wird per E-Mail an Florian gesendet.</p>
+        </div>
+        <label for="toggle-termin" class="btn-hilfe btn-orange btn-termin-open">Termin einreichen</label>
+      </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMIN EINREICHEN (Overlay) -->
+    <div class="panel-overlay panel-overlay-orange panel-overlay-top" id="overlay-termin">
+      <label for="toggle-termin" class="overlay-dismiss" aria-label="Fenster schließen"></label>
+      <div class="panel-modal">
+        <label for="toggle-termin" class="panel-close panel-close-orange" aria-label="Fenster schließen">×</label>
+        <span class="chip chip-orange">Hilfe</span>
+        <div class="panel-title">Termin<br>einreichen.</div>
+        <p class="panel-lead">Trage den Termin ein – er wird per E-Mail an Florian gesendet.</p>
+        <form class="termin-form" id="terminForm" novalidate>
+          <label class="termin-field">
+            <span>Kalender auswählen</span>
+            <select name="kalender" required>
+              <option value="" disabled selected>Bitte wählen …</option>
+              <option value="Grafenwöhr – Schultermine">Grafenwöhr – Schultermine</option>
+              <option value="Grafenwöhr – Geburtstage">Grafenwöhr – Geburtstage</option>
+              <option value="Regensburg – Schultermine">Regensburg – Schultermine</option>
+              <option value="Regensburg – Geburtstage">Regensburg – Geburtstage</option>
+            </select>
+          </label>
+          <label class="termin-field">
+            <span>Terminname</span>
+            <input type="text" name="terminname" placeholder="z. B. Elternabend Klasse 5" required>
+          </label>
+          <label class="termin-field">
+            <span>Datum</span>
+            <input type="date" name="datum" required>
+          </label>
+          <button type="submit" class="termin-submit">📅 Termin als E-Mail senden</button>
+          <p class="termin-hint">Beim Senden öffnet sich dein E-Mail-Programm mit einer fertig ausgefüllten Nachricht an Florian – nur noch auf „Senden" tippen.</p>
+          <div class="termin-done" id="terminDone"></div>
+        </form>
+      </div>
     </div>
 
   </div>
   <div class="footer">Erstellt von Florian Hirmer · St. Michaelswerk</div>
 </div>
+<script>
+  (function () {
+    var radios = document.querySelectorAll('input[name="standort"]');
+    var none = document.getElementById('tab-none');
+    var terminToggle = document.getElementById('toggle-termin');
+    function update() {
+      var open = document.querySelector('input[name="standort"]:checked');
+      var standortOpen = !!(open && open.id !== 'tab-none');
+      // Wird die Standort-Auswahl geschlossen, das Termin-Overlay mitschließen
+      if (!standortOpen && terminToggle) { terminToggle.checked = false; }
+      var locked = standortOpen || (terminToggle && terminToggle.checked);
+      document.documentElement.style.overflow = locked ? 'hidden' : '';
+      document.body.style.overflow = locked ? 'hidden' : '';
+    }
+    radios.forEach(function (r) { r.addEventListener('change', update); });
+    if (terminToggle) { terminToggle.addEventListener('change', update); }
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (terminToggle && terminToggle.checked) { terminToggle.checked = false; update(); return; }
+      if (none) { none.checked = true; update(); }
+    });
+    update();
+  })();
+
+  // ─── TERMIN EINREICHEN: vorausgefüllte E-Mail öffnen ───
+  (function () {
+    var form = document.getElementById('terminForm');
+    if (!form) return;
+    var EMPFAENGER = 'florian.hirmer@st-michaelswerk.de';
+    var done = document.getElementById('terminDone');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var kalender = form.kalender.value.trim();
+      var terminname = form.terminname.value.trim();
+      var datum = form.datum.value.trim();
+      if (!kalender || !terminname || !datum) {
+        if (typeof form.reportValidity === 'function') { form.reportValidity(); }
+        return;
+      }
+
+      var betreff = 'Neuer Termin für den Schulkalender';
+      var text = 'Hallo Florian,\n\n' +
+        'ich möchte folgenden Termin einreichen:\n\n' +
+        'Kalender: ' + kalender + '\n' +
+        'Terminname: ' + terminname + '\n' +
+        'Datum: ' + datum + '\n\n' +
+        'Vielen Dank!';
+      var mailto = 'mailto:' + EMPFAENGER +
+        '?subject=' + encodeURIComponent(betreff) +
+        '&body=' + encodeURIComponent(text);
+      window.location.href = mailto;
+
+      if (done) {
+        done.textContent = 'Dein E-Mail-Programm wurde mit dem Termin geöffnet – bitte nur noch auf „Senden" tippen.';
+        done.classList.add('show');
+      }
+      form.reset();
+    });
+  })();
+</script>
 </body>
 </html>
